@@ -11,6 +11,14 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+Create a local environment file:
+
+```bash
+copy .env.example .env
+```
+
+Then edit `.env` and replace `[YOUR-PASSWORD]` in `DATABASE_URL` with your Supabase database password.
+
 ## Local Run Command
 
 ```bash
@@ -39,6 +47,12 @@ Start Command:
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
+Environment Variables:
+
+```text
+DATABASE_URL=postgresql://postgres:<password>@db.mvkqyuqcpascgijgarwm.supabase.co:5432/postgres?sslmode=require
+```
+
 ## Test URLs
 
 Local:
@@ -46,6 +60,7 @@ Local:
 ```text
 http://127.0.0.1:8000/
 http://127.0.0.1:8000/health
+http://127.0.0.1:8000/tasks
 http://127.0.0.1:8000/practice-sessions/today
 ```
 
@@ -54,9 +69,10 @@ Render:
 ```text
 https://your-render-service-url.onrender.com/
 https://your-render-service-url.onrender.com/health
+https://your-render-service-url.onrender.com/tasks
 https://your-render-service-url.onrender.com/practice-sessions/today
 ```
 
 ## Current Scope
 
-This milestone intentionally does not include a database, authentication, or AI features.
+This milestone includes an initial read-only database-backed tasks endpoint. Authentication and AI features are planned for future milestones.

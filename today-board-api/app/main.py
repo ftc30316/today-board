@@ -1,7 +1,10 @@
 from datetime import date
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from psycopg.rows import dict_row
+
+from app.db import get_connection
 
 
 app = FastAPI(title="Today Board API")
@@ -25,6 +28,41 @@ def read_root() -> dict[str, str]:
 @app.get("/health")
 def read_health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.get("/tasks")
+def read_tasks() -> list[dict]:
+    try:
+        with get_connection() as conn:
+            with conn.cursor(row_factory=dict_row) as cursor:
+                cursor.execute(
+                    """
+                    select
+                      tasks.id::text as id,
+                      tasks.title,
+                      tasks.description,
+                      tasks.goal,
+                      tasks.status,
+                      tasks.priority,
+                      tasks.due_date,
+                      subteams.name as subteam
+                    from public.tasks
+                    left join public.subteams
+                      on subteams.id = tasks.subteam_id
+                    order by
+                      subteams.display_order,
+                      subteams.name,
+                      tasks.created_at,
+                      tasks.title;
+                    """
+                )
+                tasks = cursor.fetchall()
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail="Unable to load tasks") from exc
+
+    return tasks
 
 
 @app.get("/practice-sessions/today")
