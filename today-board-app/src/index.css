@@ -1,11 +1,12 @@
 html {
-  background: #f7f8f4;
+  background: #091117;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: #091117;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
