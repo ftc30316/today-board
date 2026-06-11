@@ -17,5 +17,4 @@ where not exists (
   select 1
   from public.students existing_student
   where existing_student.first_name = student.first_name
-    and existing_student.last_name is null
 );

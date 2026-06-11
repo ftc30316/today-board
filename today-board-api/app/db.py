@@ -11,6 +11,8 @@ def get_database_url() -> str:
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
         raise RuntimeError("DATABASE_URL is not configured")
+    if "[YOUR-PASSWORD]" in database_url:
+        raise RuntimeError("DATABASE_URL still contains the [YOUR-PASSWORD] placeholder")
     return database_url
 
 

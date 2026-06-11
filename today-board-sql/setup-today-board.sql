@@ -21,7 +21,6 @@ create table public.subteams (
 create table public.students (
   id uuid primary key default gen_random_uuid(),
   first_name text not null,
-  last_name text null,
   email text null unique,
   active boolean not null default true,
   created_at timestamptz not null default now(),
